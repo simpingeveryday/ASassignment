@@ -1,0 +1,61 @@
+﻿@page
+@model ASassignment.Pages.LoginModel
+
+@{
+	}
+@using Microsoft.Extensions.Options
+@using Microsoft.Extensions.Configuration
+@inject IOptions<ASassignment.Model.ReCAPTCHASettings> GooglereCAPTCHA
+	<div class="container mt-5">
+
+				<div class="row justify-content-center align-items-center">
+
+					<div class="col-sm-12 col-md-12 col-lg-4">
+						<h1 class="mb-3">Login </h1>
+
+						<form method="post">
+							<div asp-validation-summary="All" class="text-danger"></div>
+							
+							<div class="mb-3">
+								<label class="form-label" asp-for="LModel.Email">Email Address</label>
+								<input type="Text" asp-for="LModel.Email" class="form-control" />
+								<span asp-validaton-for="LModel.Email" class="text-danger"></span>
+							</div>
+
+							<div class="mb-3">
+								<label class="form-label" asp-for="LModel.Password">Password</label>
+								<input type="Text" asp-for="LModel.Password" class="form-control" />
+								<span asp-validaton-for="LModel.Password" class="text-danger"></span>
+							</div>
+
+							<input asp-for= "LModel.Token" />
+
+							<div class="mb-3 form-check">
+								<input type="checkbox" asp-for="LModel.RememberMe" class="form-check-input" />
+								<label class="form-check-label" asp-for="LModel.RememberMe">Remember Me?</label>
+							</div>
+
+							<div class="mb-3">
+								<button type="submit" class="btn btn-primary">Login</button>
+							</div>
+						</form>
+					</div>
+				</div>
+	</div>
+	<script src="https://www.google.com/recaptcha/api.js?render=@GooglereCAPTCHA.Value.reCAPTCHA_Site_Key"></script>
+
+
+@section Scripts {
+	<script src="https://www.google.com/recaptcha/api.js?render=@GooglereCAPTCHA.Value.reCAPTCHA_Site_Key"></script>
+		<script>
+		$(function(){
+			grecaptcha.ready(function () {
+				grecaptcha.execute('@GooglereCAPTCHA.Value.reCAPTCHA_Site_Key', { action: 'homepage' }).then(function (token) {
+					// Add your logic to submit to your backend server here.
+					console.log(token);
+					$('#LModel_Token').val(token);
+				});
+			});
+		});
+	</script>
+}
